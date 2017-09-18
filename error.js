@@ -4,11 +4,11 @@ import { reload } from './';
 import { HTMLCustomElement, define } from 'mara/ce';
 import { delegateEventListener } from 'mara/events';
 
-export class PageLoadError extends HTMLCustomElement {
+export class NavigationError extends HTMLCustomElement {
 	createdCallback() {
 		super.createdCallback();
 
-		this.navigateStarted = this.navigateStarted.bind(this);
+		this.navigateStart = this.navigateStart.bind(this);
 		this.navigateError = this.navigateError.bind(this);
 
 		delegateEventListener(this, 'click', 'button[extended-type]', function(e) {
@@ -25,16 +25,20 @@ export class PageLoadError extends HTMLCustomElement {
 	}
 
 	connectedCallback() {
-		document.addEventListener('navigateStarted', this.navigateStarted);
-		document.addEventListener('navigateError', this.navigateError);
+		super.connectedCallback();
+
+		document.addEventListener('navigate:start', this.navigateStart);
+		document.addEventListener('navigate:error', this.navigateError);
 	}
 
 	disconnectedCallback() {
-		document.removeEventListener('navigateStarted', this.navigateStarted);
-		document.removeEventListener('navigateError', this.navigateError);
+		super.disconnectedCallback();
+
+		document.removeEventListener('navigate:start', this.navigateStart);
+		document.removeEventListener('navigate:error', this.navigateError);
 	}
 
-	navigateStarted() {
+	navigateStart() {
 		this.classList.remove('active');
 	}
 
@@ -43,4 +47,4 @@ export class PageLoadError extends HTMLCustomElement {
 	}
 }
 
-define('mara-navigation-error', PageLoadError);
+define('mara-navigation-error', NavigationError);

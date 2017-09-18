@@ -7,7 +7,7 @@ let minLoadTime = 0;
 
 export function navigateStart(url, from, reload) {
 	loadStart = Date.now();
-	triggerEvent(document, 'navigateStarted', {
+	triggerEvent(document, 'navigate:start', {
 		url: url,
 		from: from,
 		reload: reload
@@ -32,14 +32,18 @@ export function navigateLoad() {
 
 export function navigateProgress(e) {
 	if(e.lengthComputable) {
-		triggerEvent(document, 'navigateProgress', {
+		triggerEvent(document, 'navigate:progress', {
 			progress: e.loaded / e.total
 		});
 	}
 }
 
 export function navigateError() {
-	triggerEvent(document, 'navigateError');
+	triggerEvent(document, 'navigate:error');
+	triggerEvent(document, 'navigate:done', {
+		error: true,
+		success: false
+	});
 }
 
 function loadHtml(html) {
@@ -95,7 +99,14 @@ function loadHtml(html) {
 			if(focus) focus.focus();
 		}
 
-		triggerEvent(document, 'navigateDone', {
+		triggerEvent(document, 'navigate:load', {
+			page: page,
+			dialog: dialog
+		});
+
+		triggerEvent(document, 'navigate:done', {
+			error: false,
+			success: true,
 			page: page,
 			dialog: dialog
 		});
