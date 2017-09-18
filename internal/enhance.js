@@ -1,5 +1,6 @@
 import { delegateEventListener } from 'mara/events';
 import { rootURL, resolveURL } from '../url';
+import { hasActiveContainer } from './container';
 
 import formSerialize from './form-serialize';
 import get from './get';
@@ -44,3 +45,9 @@ export default function enhance(el) {
 		}
 	});
 }
+
+window.addEventListener('popstate', function() {
+	if(hasActiveContainer()) {
+		get(document.location.toString(), window, false, true);
+	}
+});

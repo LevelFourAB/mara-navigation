@@ -12,9 +12,12 @@ import { navigateStart, navigateLoad, navigateError, navigateProgress } from './
  * @param {boolean} isReload
  *   if the navigation is actually a reload
  */
-export default function get(target, from=null, isReload=false) {
+export default function get(target, from=null, isReload=false, external=false) {
 	let url = resolveURL(target);
-	history.pushState(null, "", url);
+
+	if(! isReload && ! external) {
+		history.pushState(null, "", url);
+	}
 
 	const dialogs = document.querySelectorAll('mara-dialog');
 	for(const dialog of dialogs) {
