@@ -1,7 +1,7 @@
 'use strict';
 
 import { HTMLCustomElement, define } from 'mara/ce';
-import { reload } from './';
+import { reload } from './api';
 
 export class AutoReload extends HTMLCustomElement {
 	createdCallback() {

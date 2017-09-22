@@ -1,6 +1,6 @@
 'use strict';
 
-import { reload } from './';
+import { reload } from './api';
 import { HTMLCustomElement, define } from 'mara/ce';
 import { delegateEventListener } from 'mara/events';
 

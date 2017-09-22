@@ -2,6 +2,7 @@
   "name": "mara-navigation",
   "version": "0.3.0",
   "license": "MIT",
+  "main": "api.js",
   "dependencies": {
     "mara": "^0.3.0"
   },
