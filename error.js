@@ -1,7 +1,7 @@
 'use strict';
 
 import { reload } from './api';
-import { HTMLCustomElement, define } from 'mara/ce';
+import { HTMLCustomElement, define } from 'mara';
 import { delegateEventListener } from 'mara/events';
 
 export class NavigationError extends HTMLCustomElement {

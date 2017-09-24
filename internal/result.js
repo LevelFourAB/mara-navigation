@@ -52,7 +52,6 @@ function loadHtml(html) {
 
 	const newPage = newDoc.querySelector('mara-page');
 	const dialog = newDoc.querySelector('mara-dialog');
-	const notification = newDoc.querySelector('mara-notification');
 
 	let container = getActiveContainer();
 
@@ -70,16 +69,11 @@ function loadHtml(html) {
 		oldDialog.close();
 	}
 
-	const page = ! dialog && ! notification ? newPage : document.querySelector('mara-page');
+	const page = ! dialog ? newPage : document.querySelector('mara-page');
 
 	if(dialog) {
 		url = dialog.getAttribute('url');
 		page.after(dialog);
-	} else if(notification) {
-		notification.dialogs = oldDialogs;
-
-		url = page.getAttribute('url');
-		page.after(notification);
 	} else {
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
@@ -94,8 +88,8 @@ function loadHtml(html) {
 	}
 
 	setTimeout(() => {
-		if(! dialog && ! notification) {
-			let focus = page.query('[autofocus]');
+		if(! dialog) {
+			let focus = page.querySelector('[autofocus]');
 			if(focus) focus.focus();
 		}
 

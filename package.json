@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "api.js",
   "dependencies": {
-    "mara": "^0.3.0"
+    "mara": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^4.6.1"
