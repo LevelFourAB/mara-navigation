@@ -1,5 +1,5 @@
 
-import { HTMLCustomElement, InitialRender, define } from 'mara/ce';
+import { HTMLCustomElement, InitialRender, define } from 'mara';
 
 import { hasActiveContainer, setActiveContainer } from './internal/container';
 import enhance from './internal/enhance';
