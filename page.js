@@ -1,9 +1,6 @@
 
 import { HTMLCustomElement, InitialRender, define } from 'mara';
 
-import { hasActiveContainer, setActiveContainer } from './internal/container';
-import enhance from './internal/enhance';
-
 export class MaraPage extends HTMLCustomElement.with(InitialRender) {
 	get pageTitle() {
 		return this.getAttribute('page-title');
@@ -13,34 +10,15 @@ export class MaraPage extends HTMLCustomElement.with(InitialRender) {
 		return this.getAttribute('url');
 	}
 
+	get custom() {
+		return this.hasAttribute('custom');
+	}
+
 	initialRenderCallback() {
 		super.initialRenderCallback();
 
-		const entireWindow = this.hasAttribute('window');
-		if(! entireWindow) {
-			// Only intercept events within this page
-			enhance(this);
-		}
-
 		this._stateElements = [];
 		this._stateUniqueId = 0;
-
-		if(hasActiveContainer()) return false;
-
-		if(entireWindow) {
-			// Intercept events in the entire window
-			enhance(window.document.documentElement);
-		}
-
-		//api.url = this.getAttribute('url');
-		setActiveContainer(this);
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		document.title = this.pageTitle;
-		//api.lastPage = this.url;
 	}
 
 	addPageState(stateObject) {

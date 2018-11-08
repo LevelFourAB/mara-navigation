@@ -2,8 +2,9 @@
  * API for managing page navigation.
  */
 
-import get from './internal/get';
+export { addContentHandler } from './internal/result';
 
+import get from './internal/get';
 import * as urlUtils from './url';
 
 export let resolveURL = urlUtils.resolveURL;

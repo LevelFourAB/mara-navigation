@@ -1,6 +1,6 @@
 
 import { resolveURL } from '../url';
-import { navigateStart, navigateLoad, navigateError, navigateProgress } from './result';
+import { navigateStart, navigateLoad, navigateError, navigateProgress, navigateResolveCustom } from './result';
 
 /**
  * Navigate via a GET request.
@@ -27,13 +27,19 @@ export default function get(target, from=null, isReload=false, external=false) {
 
 	navigateStart(url, from, isReload);
 
-	const req = new XMLHttpRequest();
-	req.onload = navigateLoad;
-	req.onerror = navigateError;
-	req.onprogress = navigateProgress;
-	req.open('GET', url, true);
-	req.setRequestHeader('Accept', 'text/html,application/json,*/*');
-	req.setRequestHeader('X-Partial', 'true');
-	req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-	req.send();
+	navigateResolveCustom('GET', url)
+		.then(isCustom => {
+			if(isCustom) return;
+
+			const req = new XMLHttpRequest();
+			req.onload = navigateLoad;
+			req.onerror = navigateError;
+			req.onprogress = navigateProgress;
+			req.open('GET', url, true);
+			req.setRequestHeader('Accept', 'text/html,application/json,*/*');
+			req.setRequestHeader('X-Partial', 'true');
+			req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			req.send();
+		})
+		.catch(navigateError);
 }
