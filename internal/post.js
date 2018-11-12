@@ -1,5 +1,5 @@
 import { resolveURL } from '../url';
-import { navigateStart, navigateLoad, navigateError, navigateProgress } from './result';
+import { navigateStart, navigateLoad, navigateError, navigateProgress, navigateResolveCustom } from './result';
 
 /**
  * Perform a navigation via a POST.
