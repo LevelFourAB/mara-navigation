@@ -2,7 +2,7 @@
  * API for managing page navigation.
  */
 
-export { addContentHandler } from './internal/result';
+export { addContentHandler, setMinimumLoadTime } from './internal/result';
 
 import get from './internal/get';
 import * as urlUtils from './url';

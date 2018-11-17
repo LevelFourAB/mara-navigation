@@ -12,6 +12,10 @@ export function addContentHandler(handler) {
 let loadStart = 0;
 let minLoadTime = 0;
 
+export function setMinimumLoadTime(ms) {
+	minLoadTime = ms;
+}
+
 export function navigateStart(url, from, reload) {
 	loadStart = Date.now();
 	triggerEvent(document, 'navigate:start', {
