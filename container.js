@@ -79,7 +79,6 @@ export class PageContainer extends HTMLCustomElement.with(InitialRender, Childre
 	}
 
 	_loadCustom() {
-
 		// Only do a custom load if needed
 		if(! this._needsCustomLoad) return;
 		this._needsCustomLoad = false;
@@ -115,6 +114,10 @@ class ContainerImpl extends Container {
 		this.parent.pageAdded(page);
 
 		this.pages.push(page);
+
+		// Reset the scroll when a new page is added
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
 	}
 
 }
