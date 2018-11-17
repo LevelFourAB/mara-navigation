@@ -26,7 +26,7 @@ export class PageContainer extends HTMLCustomElement.with(InitialRender, Childre
 
 		setActiveContainer(this._container);
 
-		document.addEventListener('load', this._loadCustom);
+		window.addEventListener('load', this._loadCustom);
 	}
 
 	initialRenderCallback() {
@@ -47,15 +47,14 @@ export class PageContainer extends HTMLCustomElement.with(InitialRender, Childre
 
 		setActiveContainer(null);
 
-		document.removeEventListener('load', this._loadCustom);
+		window.removeEventListener('load', this._loadCustom);
 	}
 
 	childrenReadyCallback() {
 		super.childrenReadyCallback();
 
 		for(const child of this.children) {
-			console.log(child, child.custom);
-			if(child.custom) {
+			if(child.hasAttribute('custom')) {
 				// This is a <mara-page> with a custom=true used as a placeholder
 				this._needsCustomLoad = true;
 			} else {
@@ -80,7 +79,6 @@ export class PageContainer extends HTMLCustomElement.with(InitialRender, Childre
 	}
 
 	_loadCustom() {
-		console.log('do custom load');
 
 		// Only do a custom load if needed
 		if(! this._needsCustomLoad) return;
