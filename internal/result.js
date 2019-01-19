@@ -1,6 +1,8 @@
 
 import { triggerEvent } from 'mara/events';
 import { getActiveContainer } from './container';
+import { resolveURL } from '../url';
+
 import Page from './page';
 
 const handlers = [];
@@ -135,7 +137,8 @@ handlers.push(function resolveElementish(doc) {
 			items.push(new Page({
 				node: page,
 				title: page.pageTitle || page.getAttribute('page-title') || page.dataset.pageTitle,
-				url: page.url || page.getAttribute('url') || page.dataset.pageUrl
+				url: page.url || page.getAttribute('url') || page.dataset.pageUrl,
+				custom: page.custom || page.getAttribute('custom') === 'true' || page.dataset.pageCustom === 'true'
 			}));
 		}
 
@@ -154,7 +157,8 @@ handlers.push(function resolveElementish(doc) {
 		return new Page({
 			node: root,
 			title: root.dataset.pageTitle,
-			url: root.dataset.pageUrl
+			url: root.dataset.pageUrl,
+			custom: root.dataset.pageCustom === 'true'
 		});
 	}
 });
@@ -206,6 +210,16 @@ function load(data) {
 	if(lastPage.url && document.location != lastPage.url) {
 		// Update the URL with the URL of the page
 		history.replaceState(history.state, "", lastPage.url, '');
+	}
+
+	/*
+	 * If the page returned is marked as a custom page, try loading it.
+	 */
+	if(lastPage.custom) {
+		navigateResolveCustom('GET', resolveURL(lastPage.url))
+			.catch(navigateError);
+
+		return;
 	}
 
 	setTimeout(() => {

@@ -9,5 +9,6 @@ export default class Page {
 		this.title = options.title;
 		this.url = options.url;
 		this.partial = options.partial;
+		this.custom = options.custom;
 	}
 }
