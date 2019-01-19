@@ -45,9 +45,13 @@ export function navigateResolveCustom(method, url, data=undefined) {
 					resolve(true);
 				} else {
 					setTimeout(() => {
-						load(data);
+						try {
+							load(data);
 
-						resolve(true);
+							resolve(true);
+						} catch(err) {
+							reject(err);
+						}
 					}, minLoadTime - (now - loadStart));
 				}
 			}).catch(reject);
