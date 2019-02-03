@@ -88,6 +88,14 @@ export class PageContainer extends HTMLCustomElement.with(InitialRender, Childre
 		navigateStart(url, undefined, false);
 
 		navigateResolveCustom('GET', url)
+			.then(res => {
+				if(! res) {
+					// The custom resolve didn't actually do anything
+					const err = new Error('404 Page Not Found');
+					err.code = 404;
+					throw err;
+				}
+			})
 			.catch(navigateError);
 	}
 }

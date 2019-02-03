@@ -89,7 +89,13 @@ export function navigateLoad() {
 	if(now - loadStart > minLoadTime) {
 		load(html);
 	} else {
-		setTimeout(() => load(html), minLoadTime - (now - loadStart));
+		setTimeout(() => {
+			try {
+				load(html);
+			} catch(err) {
+				navigateError(err);
+			}
+		}, minLoadTime - (now - loadStart));
 	}
 }
 
@@ -104,9 +110,15 @@ export function navigateProgress(e) {
 export function navigateError(err) {
 	console.error('Unable to navigate', err);
 
-	triggerEvent(document, 'navigate:error');
+	if(! err) {
+		err = new Error();
+	}
+
+	triggerEvent(document, 'navigate:error', {
+		error: err
+	});
 	triggerEvent(document, 'navigate:done', {
-		error: true,
+		error: err,
 		success: false
 	});
 }
@@ -183,8 +195,10 @@ function resolvePages(data, lastIndex=-1) {
 
 function load(data) {
 	const pages = resolvePages(data);
-	if(! pages || pages.length === 0) {
-		throw new Error('No pages found');
+	if(! pages || pages.filter(p => ! p.custom).length === 0) {
+		const err = new Error('No pages found');
+		err.code = 404;
+		throw err;
 	}
 
 	let container = getActiveContainer();
